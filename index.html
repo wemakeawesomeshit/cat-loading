@@ -1,0 +1,17 @@
+<body>
+
+<script>
+
+var loading = new Loading();
+loading.countToLoad = 23;
+loading.onFinished = function(){
+	clearInterval(t);
+}
+
+t = setInterval(function(){
+	loading.objectLoaded();
+}, 1000);
+
+</script>
+
+</body>

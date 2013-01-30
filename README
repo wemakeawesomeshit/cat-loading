@@ -1,0 +1,13 @@
+// this renders the loading object
+var loading = new Loading();
+
+// set the number of objects to load
+loading.countToLoad = 23; 
+
+// set up the callback when complete
+loading.onFinished = function(){
+	clearInterval(t);
+}
+
+// called when an object is loaded
+loading.objectLoaded();
