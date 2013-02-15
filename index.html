@@ -1,8 +1,24 @@
 <body>
 
+<script src='loading.js'></script>
+
 <script>
 
-var loading = new Loading();
+var loading = new Loading({
+//	text: "Loading...",
+
+//	modal: {
+//		background:"rgba(0,0,0,0.7)",
+	
+//		zIndex: 9999999999
+//	},
+
+//	blur: false,
+
+///	className: "wmas-loading"
+});
+
+
 loading.countToLoad = 23;
 loading.onFinished = function(){
 	clearInterval(t);

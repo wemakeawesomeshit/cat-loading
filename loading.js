@@ -1,9 +1,51 @@
-var Loading = function() {
+function MergeRecursive(obj1, obj2) {
+
+  for (var p in obj2) {
+    try {
+      // Property in destination object set; update its value.
+      if ( obj2[p].constructor==Object ) {
+        obj1[p] = MergeRecursive(obj1[p], obj2[p]);
+
+      } else {
+        obj1[p] = obj2[p];
+
+      }
+
+    } catch(e) {
+      // Property in destination object not set; create it and set its value.
+      obj1[p] = obj2[p];
+
+    }
+  }
+
+  return obj1;
+}
+
+var Loading = function(options) {
 	var modal = document.createElement("div");
 	var loading = document.createElement("div");
 	var loadingbar = document.createElement("div");
 	var loadingtext = document.createElement("div");
 	loadingtext.innerHTML = 0;
+
+	var defaults = {
+		text: "{VAL} %",
+
+		modal: {
+			background:"rgba(0,0,0,0.7)",
+			zIndex: 9999999999
+		},
+
+		blur: true,
+
+		className: "wmas-loading"
+	};
+	
+
+	options = MergeRecursive(defaults, options);
+
+
+
 
 	this.countToLoad = 0;
 	this.loadedCount = 0
@@ -28,7 +70,7 @@ var Loading = function() {
 			return;
 		}
 		this.unBlur(((100-percent) / 100) * 25);
-		this.displayPercentage(percent);
+		this.displayPercentage(percent, options.text);
 	}
 
 	var styles = {
@@ -38,9 +80,8 @@ var Loading = function() {
 			bottom:0,
 			right:0,
 			left:0,
-			background:"rgb(0,0,0)",
-			background:"rgba(0,0,0,0.7)",
-			zIndex:999999999
+			background:options.modal.background,
+			zIndex:options.modal.zIndex
 		},
 		loading: {
 			border:"11px solid #fff",
@@ -52,7 +93,7 @@ var Loading = function() {
 			borderBottomWidth: "61px",
 			borderRadius:"4px",
 			width:"240px",
-			marginLeft:"-131px",
+			marginLeft:"-141px",
 			marginTop:"-200px"
 		},
 		loadingbar: {
@@ -83,7 +124,11 @@ var Loading = function() {
 		}
 	}
 
-	var updateHtml = function(element, end, strAfter) {
+	if (!options.blur) {
+		styles.loadingbar.webkitFilter = "";
+	}
+
+	var updateHtml = function(element, end, text) {
 		var start = parseInt(element.innerHTML, 10);
 		start++;
 
@@ -92,7 +137,7 @@ var Loading = function() {
 		}
 
 
-		element.innerHTML = parseInt(start, 10)+strAfter;
+		element.innerHTML = text.replace("{VAL}",parseInt(start, 10));
 
 		if (start === end || start > end) {
 			start = end;
@@ -100,7 +145,7 @@ var Loading = function() {
 		}
 
 		htmlUpdate = setTimeout(function() {
-			updateHtml(element, end, strAfter);
+			updateHtml(element, end, text);
 		}, 50);
 	}
 
@@ -114,20 +159,24 @@ var Loading = function() {
 	this.unBlur = function(size) {
 		console.log(size);
 		size = parseInt(size, 10);
+		if (!options.blur) size = 0;
 		loadingbar.style.webkitFilter = "blur("+size+"px)";
 	}
 
-	this.displayPercentage = function(percentage) {
-		updateHtml(loadingtext, percentage, " %");
+	this.displayPercentage = function(percentage, text) {
+		updateHtml(loadingtext, percentage, text);
 	}
 
-	this.displayPercentage(0);
+
+
+	
+	this.displayPercentage(0, options.text);
 
 	addStyles(modal, styles.modal);
 	addStyles(loading, styles.loading);
 	addStyles(loadingbar, styles.loadingbar);
 	addStyles(loadingtext, styles.loadingtext);
-
+	loading.className = options.className;
 	modal.appendChild(loading);
 	loading.appendChild(loadingbar);
 	loading.appendChild(loadingtext);
