@@ -157,7 +157,6 @@ var Loading = function(options) {
 	}
 
 	this.unBlur = function(size) {
-		console.log(size);
 		size = parseInt(size, 10);
 		if (!options.blur) size = 0;
 		loadingbar.style.webkitFilter = "blur("+size+"px)";
