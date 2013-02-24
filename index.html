@@ -5,27 +5,27 @@
 <script>
 
 var loading = new Loading({
-//	text: "Loading...",
+//  text: "Loading...",
 
-//	modal: {
-//		background:"rgba(0,0,0,0.7)",
-	
-//		zIndex: 9999999999
-//	},
+//  modal: {
+//    background:"rgba(0,0,0,0.7)",
 
-//	blur: false,
+//    zIndex: 9999999999
+//  },
 
-///	className: "wmas-loading"
+//  blur: false,
+
+/// className: "wmas-loading"
 });
 
 
 loading.countToLoad = 23;
 loading.onFinished = function(){
-	clearInterval(t);
+  clearInterval(t);
 }
 
 t = setInterval(function(){
-	loading.objectLoaded();
+  loading.objectLoaded();
 }, 1000);
 
 </script>
