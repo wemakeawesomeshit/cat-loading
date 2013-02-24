@@ -41,7 +41,7 @@ var Loading = function(options) {
   options = MergeRecursive(defaults, options);
 
   this.countToLoad = 0;
-  this.loadedCount = 0
+  this.loadedCount = 0;
 
   this.objectLoaded = function() {
     this.loadedCount++;
@@ -51,11 +51,11 @@ var Loading = function(options) {
       document.body.removeChild(modal);
       this.onFinished();
     }
-  }
+  };
 
   this.onFinished = function() {
 
-  }
+  };
 
   this.setCompletion = function(percent) {
     if (percent > 100) {
@@ -64,7 +64,7 @@ var Loading = function(options) {
     }
     this.unBlur(((100-percent) / 100) * 25);
     this.displayPercentage(percent, options.text);
-  }
+  };
 
   var styles = {
     modal: {
@@ -103,7 +103,7 @@ var Loading = function(options) {
       mozTransform:"translateZ(0)",
       transform:"translateZ(0)",
       background:"url(http://ckingchristmas.s3.amazonaws.com/cat.gif)",
-      backgroundPosition: "center bottom",
+      backgroundPosition: "center bottom"
     },
     loadingtext: {
       position:"absolute",
@@ -115,7 +115,7 @@ var Loading = function(options) {
       height:"96%",
       textAlign: "center"
     }
-  }
+  };
 
   if (!options.blur) {
     styles.loadingbar.webkitFilter = "";
@@ -140,28 +140,25 @@ var Loading = function(options) {
     htmlUpdate = setTimeout(function() {
       updateHtml(element, end, text);
     }, 50);
-  }
+  };
 
 
   var addStyles = function(element, styles) {
     for (var i in styles) {
       element.style[i] = styles[i];
     }
-  }
+  };
 
   this.unBlur = function(size) {
     size = parseInt(size, 10);
     if (!options.blur) size = 0;
     loadingbar.style.webkitFilter = "blur("+size+"px)";
-  }
+  };
 
   this.displayPercentage = function(percentage, text) {
     updateHtml(loadingtext, percentage, text);
-  }
+  };
 
-
-
-  
   this.displayPercentage(0, options.text);
 
   addStyles(modal, styles.modal);
@@ -176,4 +173,4 @@ var Loading = function(options) {
   document.body.appendChild(modal);
 
   return this;
-}
+};
